@@ -41,7 +41,7 @@ export const listUsers = () => async (dispatch) => {
   }
 };
 
-export const createUser = () => async (dispatch) => {
+export const createUser = (name, email) => async (dispatch) => {
   try {
     dispatch({
       type: USER_CREATE_REQUEST,
@@ -53,7 +53,7 @@ export const createUser = () => async (dispatch) => {
 
     const { data } = await axios.post(
       `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/`,
-      {},
+      { name, email },
       config
     );
 

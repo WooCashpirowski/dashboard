@@ -19,15 +19,10 @@ const DashboardView = () => {
     success: successDel,
   } = useSelector((state) => state.userDelete);
 
-  const [usersList, setUsersList] = useState([]);
-
   useEffect(() => {
     dispatch({ type: USER_DETAILS_RESET });
     dispatch(listUsers());
-    if (users && !loading) {
-      setUsersList(users);
-    }
-  }, [dispatch, successDel]);
+  }, [dispatch]);
 
   const handleDeleteUser = (id) => {
     if (window.confirm("Are you sure?")) {
@@ -37,8 +32,6 @@ const DashboardView = () => {
       setShowModal(true);
       setTimeout(() => setShowModal(false), 1000);
     }
-    const usersFiltered = users.filter((user) => user.id !== id);
-    setUsersList(usersFiltered);
   };
 
   return (
@@ -70,33 +63,32 @@ const DashboardView = () => {
             </tr>
           </thead>
           <tbody>
-            {users &&
-              usersList.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>{user.name}</td>
-                  <td>{user.username}</td>
-                  <td>{user.address.city}</td>
-                  <td>{user.email}</td>
-                  <td>
-                    <LinkContainer to={`/user/${user.id}`}>
-                      <Button variant="info" className="btn-sm" block>
-                        Edit
-                      </Button>
-                    </LinkContainer>{" "}
-                  </td>
-                  <td>
-                    <Button
-                      variant="danger"
-                      className="btn-sm"
-                      block
-                      onClick={() => handleDeleteUser(user.id)}
-                    >
-                      Delete
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.name}</td>
+                <td>{user.username}</td>
+                <td>{user.address.city}</td>
+                <td>{user.email}</td>
+                <td>
+                  <LinkContainer to={`/user/${user.id}`}>
+                    <Button variant="info" className="btn-sm" block>
+                      Edit
                     </Button>
-                  </td>
-                </tr>
-              ))}
+                  </LinkContainer>{" "}
+                </td>
+                <td>
+                  <Button
+                    variant="danger"
+                    className="btn-sm"
+                    block
+                    onClick={() => handleDeleteUser(user.id)}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       )}

@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { listUserDetails, updateUser } from "../redux/userActions";
-import { USER_UPDATE_RESET } from "../redux/userConstants";
+import { createUser } from "../redux/userActions";
 import Header from "../Components/Header";
 import { useDispatch, useSelector } from "react-redux";
+import Modal from "../Components/Modal";
 
-const EditUserView = () => {
+const EditUserView = ({ history }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
+  const dispatch = useDispatch();
+  const { loading, success } = useSelector((state) => state.userCreate);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(createUser(name, email));
+    if (success) {
+      history.push("/");
+    }
   };
 
   return (
@@ -20,51 +27,54 @@ const EditUserView = () => {
       <Link to="/" className="btn btn-light my-3">
         Go Back
       </Link>
+      {loading ? (
+        <Modal info="loading..." />
+      ) : (
+        <Container>
+          <Row className="justify-content-md-center">
+            <Col xs={12} md={6}>
+              <h2>New user</h2>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="name">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="name"
+                    placeholder="Enter name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  ></Form.Control>
+                </Form.Group>
 
-      <Container>
-        <Row className="justify-content-md-center">
-          <Col xs={12} md={6}>
-            <h2>New user</h2>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group controlId="name">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="name"
-                  placeholder="Enter name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                ></Form.Control>
-              </Form.Group>
-
-              <Form.Group controlId="price">
-                <Form.Label>Price</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Enter email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                ></Form.Control>
-              </Form.Group>
-              <Row>
-                <Col>
-                  <Link to="/">
-                    <Button variant="info" block>
-                      Cancel
+                <Form.Group controlId="price">
+                  <Form.Label>Price</Form.Label>
+                  <Form.Control
+                    type="email"
+                    placeholder="Enter email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  ></Form.Control>
+                </Form.Group>
+                <Row>
+                  <Col>
+                    <Link to="/">
+                      <Button variant="info" block>
+                        Cancel
+                      </Button>
+                    </Link>
+                  </Col>
+                  <Col>
+                    <Button type="submit" variant="primary" block>
+                      Create
                     </Button>
-                  </Link>
-                </Col>
-                <Col>
-                  <Button type="submit" variant="primary" block>
-                    Create
-                  </Button>
-                </Col>
-              </Row>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
+                  </Col>
+                </Row>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+      )}
     </>
   );
 };
