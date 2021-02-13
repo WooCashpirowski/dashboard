@@ -40,8 +40,6 @@ const DashboardView = () => {
     }
   };
 
-  console.log(usersList);
-
   const sortUsers = () => {
     if (sortAscending) {
       const usersSorted = users.sort((a, b) =>
