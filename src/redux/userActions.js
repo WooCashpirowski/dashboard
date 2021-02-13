@@ -16,6 +16,9 @@ import {
   USER_UPDATE_FAIL,
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
+  USERS_PAGE_LIST_POPULATE,
+  USERS_PAGE_LIST_UPDATE,
+  USERS_PAGE_LIST_DELETE_USER,
 } from "./userConstants";
 
 export const listUsers = () => async (dispatch) => {
@@ -23,7 +26,7 @@ export const listUsers = () => async (dispatch) => {
     dispatch({ type: USERS_LIST_REQUEST });
 
     const { data } = await axios.get(
-      `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data`
+      `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data`,
     );
 
     dispatch({
@@ -54,7 +57,7 @@ export const createUser = (name, email) => async (dispatch) => {
     const { data } = await axios.post(
       `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/`,
       { name, email },
-      config
+      config,
     );
 
     dispatch({
@@ -78,7 +81,7 @@ export const listUserDetails = (id) => async (dispatch) => {
     dispatch({ type: USER_DETAILS_REQUEST });
 
     const { data } = await axios.get(
-      `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${id}`
+      `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${id}`,
     );
 
     dispatch({
@@ -111,7 +114,7 @@ export const updateUser = (user) => async (dispatch) => {
     const { data } = await axios.put(
       `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${user.id}`,
       user,
-      config
+      config,
     );
 
     dispatch({ type: USER_UPDATE_SUCCESS });
@@ -143,7 +146,7 @@ export const deleteUser = (id) => async (dispatch) => {
 
     await axios.delete(
       `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${id}`,
-      config
+      config,
     );
 
     dispatch({ type: USER_DELETE_SUCCESS });
@@ -157,4 +160,12 @@ export const deleteUser = (id) => async (dispatch) => {
       payload: message,
     });
   }
+};
+
+export const listPageUsers = (users) => (dispatch, getState) => {
+  dispatch({ type: USERS_PAGE_LIST_POPULATE, payload: { usersList: users } });
+  localStorage.setItem(
+    "usersList",
+    JSON.stringify(getState().usersPageList.usersList),
+  );
 };

@@ -7,6 +7,7 @@ import {
   userUpdateReducer,
   userCreateReducer,
   userDeleteReducer,
+  usersPageListReducer,
 } from "./redux/userReducers";
 
 const reducer = combineReducers({
@@ -15,16 +16,23 @@ const reducer = combineReducers({
   userUpdate: userUpdateReducer,
   userCreate: userCreateReducer,
   userDelete: userDeleteReducer,
+  usersPageList: usersPageListReducer,
 });
 
-const initialState = {};
+const usersListFromStorage = localStorage.getItem("usersList")
+  ? JSON.parse(localStorage.getItem("usersList"))
+  : [];
+
+const initialState = {
+  usersPageList: usersListFromStorage,
+};
 
 const middleware = [thunk];
 
 const store = createStore(
   reducer,
   initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
+  composeWithDevTools(applyMiddleware(...middleware)),
 );
 
 export default store;

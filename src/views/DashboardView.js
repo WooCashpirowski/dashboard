@@ -2,17 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Row, Col } from "react-bootstrap";
-import { listUsers, deleteUser } from "../redux/userActions";
 import { Link } from "react-router-dom";
+import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
+import { listUsers, deleteUser, listPageUsers } from "../redux/userActions";
 import { USER_DETAILS_RESET } from "../redux/userConstants";
 import Header from "../Components/Header";
 import Modal from "../Components/Modal";
 
 const DashboardView = () => {
   const [showModal, setShowModal] = useState(false);
+  const [sortAscending, setSortAscending] = useState(true);
 
   const dispatch = useDispatch();
-  const { loading, error, users } = useSelector((state) => state.usersList);
+  const { loading, error, success, users } = useSelector(
+    (state) => state.usersList,
+  );
+  const { usersList } = useSelector((state) => state.usersPageList);
   const {
     loading: loadingDel,
     error: errorDel,
@@ -22,6 +27,7 @@ const DashboardView = () => {
   useEffect(() => {
     dispatch({ type: USER_DETAILS_RESET });
     dispatch(listUsers());
+    dispatch(listPageUsers(users));
   }, [dispatch]);
 
   const handleDeleteUser = (id) => {
@@ -31,6 +37,24 @@ const DashboardView = () => {
     if (successDel) {
       setShowModal(true);
       setTimeout(() => setShowModal(false), 1000);
+    }
+  };
+
+  console.log(usersList);
+
+  const sortUsers = () => {
+    if (sortAscending) {
+      const usersSorted = users.sort((a, b) =>
+        a.username < b.username ? -1 : a.username > b.username ? 1 : 0,
+      );
+      dispatch(listPageUsers(usersSorted));
+      setSortAscending(false);
+    } else {
+      const usersSorted = users.sort((a, b) =>
+        b.username < a.username ? -1 : b.username > a.username ? 1 : 0,
+      );
+      dispatch(listPageUsers(usersSorted));
+      setSortAscending(true);
     }
   };
 
@@ -55,7 +79,16 @@ const DashboardView = () => {
             <tr>
               <th>Id</th>
               <th>Name</th>
-              <th>Username</th>
+              <th>
+                <div style={{ cursor: "pointer" }} onClick={sortUsers}>
+                  Username{" "}
+                  {sortAscending ? (
+                    <AiOutlineArrowDown />
+                  ) : (
+                    <AiOutlineArrowUp />
+                  )}
+                </div>
+              </th>
               <th>City</th>
               <th>Email</th>
               <th></th>

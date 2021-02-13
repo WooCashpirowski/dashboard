@@ -17,6 +17,9 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_RESET,
   USER_UPDATE_SUCCESS,
+  USERS_PAGE_LIST_POPULATE,
+  USERS_PAGE_LIST_UPDATE,
+  USERS_PAGE_LIST_DELETE_USER,
 } from "./userConstants";
 
 export const usersListReducer = (state = { users: [] }, action) => {
@@ -27,6 +30,7 @@ export const usersListReducer = (state = { users: [] }, action) => {
       return {
         loading: false,
         users: action.payload,
+        success: true,
       };
     case USERS_LIST_FAIL:
       return { loading: false, error: action.payload };
@@ -88,6 +92,15 @@ export const userDeleteReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case USER_DELETE_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const usersPageListReducer = (state = { usersList: [] }, action) => {
+  switch (action.type) {
+    case USERS_PAGE_LIST_POPULATE:
+      return { usersList: action.payload };
     default:
       return state;
   }
