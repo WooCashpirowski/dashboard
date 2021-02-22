@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import { listUsers, deleteUser, listPageUsers } from "../redux/userActions";
 import { USER_DETAILS_RESET } from "../redux/userConstants";
-import Header from "../components/Header";
 import Modal from "../components/Modal";
 
 const DashboardView = () => {
@@ -65,7 +64,6 @@ const DashboardView = () => {
   return (
     <>
       {showModal && <Modal info={successDel && "User deleted"} />}
-      <Header />
       <Row className="align-items-center">
         <Col className="text-right">
           <Link to="/new-user" className="btn btn-primary my-3">

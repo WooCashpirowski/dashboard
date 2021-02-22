@@ -3,7 +3,6 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { listUserDetails, updateUser } from "../redux/userActions";
 import { USER_UPDATE_RESET } from "../redux/userConstants";
-import Header from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 
 const EditUserView = ({ match, history }) => {
@@ -54,7 +53,6 @@ const EditUserView = ({ match, history }) => {
 
   return (
     <>
-      <Header />
       <Link to="/" className="btn btn-light my-3">
         Go Back
       </Link>

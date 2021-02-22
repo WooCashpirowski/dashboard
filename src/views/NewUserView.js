@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { createUser } from "../redux/userActions";
-import Header from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../components/Modal";
 
@@ -30,11 +29,8 @@ const EditUserView = ({ history }) => {
     history.push("/");
   };
 
-  console.log(pageList);
-
   return (
     <>
-      <Header />
       <Link to="/" className="btn btn-light my-3">
         Go Back
       </Link>
