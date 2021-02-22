@@ -31,5 +31,8 @@ const ModalStyled = styled.div`
     height: 200px;
     background: white;
     padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;

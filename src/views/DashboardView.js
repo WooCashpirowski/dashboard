@@ -15,11 +15,9 @@ const DashboardView = () => {
   const dispatch = useDispatch();
   const { loading, error, users } = useSelector((state) => state.usersList);
   const { pageList } = useSelector((state) => state.usersPageList);
-  const {
-    loading: loadingDel,
-    error: errorDel,
-    success: successDel,
-  } = useSelector((state) => state.userDelete);
+  const { loading: loadingDel, success: successDel } = useSelector(
+    (state) => state.userDelete
+  );
 
   useEffect(() => {
     dispatch({ type: USER_DETAILS_RESET });
@@ -73,8 +71,8 @@ const DashboardView = () => {
       </Row>
       {loading || loadingDel ? (
         <Modal info="loading..." />
-      ) : error || errorDel ? (
-        <Modal info={error || errorDel} />
+      ) : error ? (
+        <Modal info={error} />
       ) : (
         <>
           {pageList && pageList.length === 0 && (

@@ -17,8 +17,6 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USERS_PAGE_LIST_POPULATE,
-  USERS_PAGE_LIST_UPDATE,
-  USERS_PAGE_LIST_DELETE_USER,
 } from "./userConstants";
 
 export const listUsers = () => async (dispatch, getState) => {
