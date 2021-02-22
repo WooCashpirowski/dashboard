@@ -1,25 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { createUser } from "../redux/userActions";
-import Header from "../Components/Header";
+import Header from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
-import Modal from "../Components/Modal";
+import Modal from "../components/Modal";
 
 const EditUserView = ({ history }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   const dispatch = useDispatch();
-  const { loading, success } = useSelector((state) => state.userCreate);
+  const { loading } = useSelector((state) => state.userCreate);
+  const { pageList } = useSelector((state) => state.usersPageList);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(createUser(name, email));
-    if (success) {
-      history.push("/");
-    }
+    const newUser = {
+      id: pageList.length + 11,
+      name,
+      username: name.split(" ")[0],
+      address: {
+        city: "",
+      },
+      email,
+    };
+    pageList.push(newUser);
+    history.push("/");
   };
+
+  console.log(pageList);
 
   return (
     <>
@@ -46,8 +57,8 @@ const EditUserView = ({ history }) => {
                   ></Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId="price">
-                  <Form.Label>Price</Form.Label>
+                <Form.Group controlId="email">
+                  <Form.Label>Email</Form.Label>
                   <Form.Control
                     type="email"
                     placeholder="Enter email"

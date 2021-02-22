@@ -30,7 +30,6 @@ export const usersListReducer = (state = { users: [] }, action) => {
       return {
         loading: false,
         users: action.payload,
-        success: true,
       };
     case USERS_LIST_FAIL:
       return { loading: false, error: action.payload };
@@ -97,10 +96,10 @@ export const userDeleteReducer = (state = {}, action) => {
   }
 };
 
-export const usersPageListReducer = (state = { usersList: [] }, action) => {
+export const usersPageListReducer = (state = [], action) => {
   switch (action.type) {
     case USERS_PAGE_LIST_POPULATE:
-      return { usersList: action.payload };
+      return { pageList: action.payload };
     default:
       return state;
   }

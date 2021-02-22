@@ -3,7 +3,7 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { listUserDetails, updateUser } from "../redux/userActions";
 import { USER_UPDATE_RESET } from "../redux/userConstants";
-import Header from "../Components/Header";
+import Header from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 
 const EditUserView = ({ match, history }) => {
@@ -12,20 +12,18 @@ const EditUserView = ({ match, history }) => {
   const [email, setEmail] = useState("");
 
   const dispatch = useDispatch();
-  const { loading: loadingDetails, error: errorDetails, user } = useSelector(
+  const { loading: loadingDetails, user } = useSelector(
     (state) => state.userDetails
   );
+  const { pageList } = useSelector((state) => state.usersPageList);
 
-  const {
-    loading: loadingUpdate,
-    success: successUpdate,
-    error: errorUpdate,
-  } = useSelector((state) => state.userUpdate);
+  const { loading: loadingUpdate, success: successUpdate } = useSelector(
+    (state) => state.userUpdate
+  );
 
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: USER_UPDATE_RESET });
-      history.push("/");
     } else {
       if (!user || !user.name) {
         dispatch(listUserDetails(userId));
@@ -34,11 +32,24 @@ const EditUserView = ({ match, history }) => {
         setEmail(user.email);
       }
     }
-  }, [dispatch, history, user, userId, successUpdate]);
+  }, [dispatch, user, userId, successUpdate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateUser({ id: userId, name, email }));
+    const updatedUser = {
+      id: parseInt(userId),
+      name,
+      username: name.split(" ")[0],
+      address: {
+        city: user.city,
+      },
+      email,
+    };
+
+    pageList.forEach((item) => item.id == userId && pageList.splice(item, 1));
+    pageList.push(updatedUser);
+    history.push("/");
   };
 
   return (

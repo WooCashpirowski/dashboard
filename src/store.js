@@ -19,8 +19,8 @@ const reducer = combineReducers({
   usersPageList: usersPageListReducer,
 });
 
-const usersListFromStorage = localStorage.getItem("usersList")
-  ? JSON.parse(localStorage.getItem("usersList"))
+const usersListFromStorage = localStorage.getItem("pageList")
+  ? JSON.parse(localStorage.getItem("pageList"))
   : [];
 
 const initialState = {
@@ -32,7 +32,7 @@ const middleware = [thunk];
 const store = createStore(
   reducer,
   initialState,
-  composeWithDevTools(applyMiddleware(...middleware)),
+  composeWithDevTools(applyMiddleware(...middleware))
 );
 
 export default store;

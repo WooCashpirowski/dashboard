@@ -21,18 +21,26 @@ import {
   USERS_PAGE_LIST_DELETE_USER,
 } from "./userConstants";
 
-export const listUsers = () => async (dispatch) => {
+export const listUsers = () => async (dispatch, getState) => {
   try {
     dispatch({ type: USERS_LIST_REQUEST });
 
     const { data } = await axios.get(
-      `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data`,
+      `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data`
     );
 
     dispatch({
       type: USERS_LIST_SUCCESS,
       payload: data,
     });
+
+    localStorage.setItem("pageList", JSON.stringify(data));
+
+    const { pageList } = getState().usersPageList;
+
+    if (data && !pageList) {
+      dispatch(listPageUsers(data));
+    }
   } catch (error) {
     dispatch({
       type: USERS_LIST_FAIL,
@@ -57,7 +65,7 @@ export const createUser = (name, email) => async (dispatch) => {
     const { data } = await axios.post(
       `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/`,
       { name, email },
-      config,
+      config
     );
 
     dispatch({
@@ -81,7 +89,7 @@ export const listUserDetails = (id) => async (dispatch) => {
     dispatch({ type: USER_DETAILS_REQUEST });
 
     const { data } = await axios.get(
-      `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${id}`,
+      `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${id}`
     );
 
     dispatch({
@@ -114,7 +122,7 @@ export const updateUser = (user) => async (dispatch) => {
     const { data } = await axios.put(
       `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${user.id}`,
       user,
-      config,
+      config
     );
 
     dispatch({ type: USER_UPDATE_SUCCESS });
@@ -146,7 +154,7 @@ export const deleteUser = (id) => async (dispatch) => {
 
     await axios.delete(
       `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${id}`,
-      config,
+      config
     );
 
     dispatch({ type: USER_DELETE_SUCCESS });
@@ -162,10 +170,6 @@ export const deleteUser = (id) => async (dispatch) => {
   }
 };
 
-export const listPageUsers = (users) => (dispatch, getState) => {
-  dispatch({ type: USERS_PAGE_LIST_POPULATE, payload: { usersList: users } });
-  localStorage.setItem(
-    "usersList",
-    JSON.stringify(getState().usersPageList.usersList),
-  );
+export const listPageUsers = (users) => (dispatch) => {
+  dispatch({ type: USERS_PAGE_LIST_POPULATE, payload: users });
 };
