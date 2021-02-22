@@ -41,7 +41,7 @@ const EditUserView = ({ match, history }) => {
       name,
       username: name.split(" ")[0],
       address: {
-        city: user.city,
+        city: "",
       },
       email,
     };
