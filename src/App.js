@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import DashboardView from "./views/DashboardView";
 import EditUserView from "./views/EditUserView";
 import NewUserView from "./views/NewUserView";
-import Header from "./components/Header";
+import Header from "./Components/Header";
 
 function App() {
   return (

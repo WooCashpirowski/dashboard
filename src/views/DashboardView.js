@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import { listUsers, deleteUser, listPageUsers } from "../redux/userActions";
 import { USER_DETAILS_RESET } from "../redux/userConstants";
-import Modal from "../components/Modal";
+import Modal from "../Components/Modal";
 
 const DashboardView = () => {
   const [showModal, setShowModal] = useState(false);
